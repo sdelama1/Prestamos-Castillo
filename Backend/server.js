@@ -15,6 +15,7 @@ const externalApiRoutes = require("./routes/externalApi");
 const paymentRoutes = require("./routes/payments");
 
 // Importar el modelo de usuario (asegúrate de que esta ruta sea correcta)
+// Si tu modelo User.js está en Backend/models/User.js, esta ruta es correcta.
 const User = require("./models/User"); // <-- ¡IMPORTA TU MODELO DE USUARIO AQUÍ!
 
 dotenv.config();
@@ -32,11 +33,6 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json()); // Permite que Express lea JSON en el cuerpo de las peticiones
-
-// Conectar a la base de datos MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Conectado a MongoDB"))
-    .catch((err) => console.log("Error al conectar a MongoDB:", err));
 
 // --- RUTA TEMPORAL PARA REGISTRO (¡ELIMINAR O PROTEGER ANTES DE PRODUCCIÓN!) ---
 // Esta ruta te permitirá crear un usuario para pruebas.
@@ -86,6 +82,11 @@ app.post('/api/auth/register-temp', async (req, res) => {
 });
 // --------------------------------------------------------------------------
 
+
+// Conectar a la base de datos MongoDB
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Conectado a MongoDB"))
+    .catch((err) => console.log("Error al conectar a MongoDB:", err));
 
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../Frontend')));

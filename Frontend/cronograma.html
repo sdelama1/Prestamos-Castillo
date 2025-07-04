@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrestamosCastillo - Cronograma de Pagos</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <!-- Incluir html2pdf.js para la generación de PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">💰 PrestamosCastillo</div>
+    <div class="nav-links">
+      <a href="prestamos.html">Préstamos</a>
+      <a href="cronograma.html" class="active">Cronograma</a>
+      <a href="deudas.html">Deudas</a> <!-- Nuevo enlace para la gestión de deudas -->
+      <a href="cambiar-password.html">Cambiar Contraseña</a>
+      <a href="#" onclick="logout()">Cerrar Sesión</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h2>Cronograma de Pagos</h2>
+    </div>
+
+    <div class="card">
+      <div class="filter-section">
+        <div class="form-group">
+          <label for="clienteSelect">Seleccionar Cliente:</label>
+          <select id="clienteSelect" onchange="mostrarCronograma()">
+            <option value="">Seleccionar cliente...</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div id="cronogramaCard" class="card" style="display: none;">
+      <div class="cronograma-header">
+        <h3 id="clienteInfo"></h3>
+        <div class="resumen-prestamo">
+          <div class="resumen-item"><span class="label">Monto Prestado:</span><span id="montoPrestado" class="value"></span></div>
+          <div class="resumen-item"><span class="label">Cuota Mensual:</span><span id="cuotaMensual" class="value"></span></div>
+          <div class="resumen-item"><span class="label">Total a Pagar:</span><span id="totalPagar" class="value"></span></div>
+          <div class="resumen-item"><span class="label">Interés Total:</span><span id="interesTotal" class="value"></span></div>
+        </div>
+      </div>
+
+      <!-- Sección imprimible del cronograma -->
+      <div id="cronograma-printable" class="table-container">
+        <table id="cronogramaTable">
+          <thead>
+            <tr>
+              <th>Cuota</th>
+              <th>Fecha de Vencimiento</th>
+              <th>Monto Cuota</th>
+              <th>Capital</th>
+              <th>Interés</th>
+              <th>Saldo Pendiente</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="cronogramaTableBody"></tbody>
+        </table>
+      </div>
+      <div class="form-actions" style="justify-content: center; margin-top: 20px;">
+          <button id="btn-imprimir-pdf" class="btn-primary">Imprimir Cronograma en PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modales personalizados para alertas y confirmaciones -->
+  <div id="customModal" class="modal" style="display: none;">
+      <div class="modal-content">
+          <span class="close-button" onclick="closeModal()">&times;</span>
+          <p id="modalMessage"></p>
+          <div id="modalActions" class="modal-actions">
+              <button id="modalConfirmBtn" class="btn-primary" style="display: none;">Aceptar</button>
+              <button id="modalCancelBtn" class="btn-secondary" style="display: none;">Cancelar</button>
+              <button id="modalAlertBtn" class="btn-primary" style="display: none;">OK</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- Scripts necesarios para esta página -->
+  <script src="js/config.js"></script>
+<script src="js/login.js"></script>
+<script src="js/cronograma.js"></script>
+  <!-- prestamos.js y password.js no son estrictamente necesarios aquí -->
+</body>
+</html>

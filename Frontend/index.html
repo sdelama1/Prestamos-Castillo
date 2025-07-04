@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrestamosCastillo - Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <h1>💰 PrestamosCastillo</h1>
+                <p>Sistema de Gestión de Préstamos</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Usuario:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                
+                <div id="error-message" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script de login -->
+    <script>
+        // Configuración inicial
+        document.addEventListener("DOMContentLoaded", () => {
+            // Si ya está logueado y está en la página de login, redirige
+            const currentPage = window.location.pathname.split("/").pop();
+            if (localStorage.getItem("loggedIn") === "true" && currentPage === "index.html") {
+                window.location.href = "prestamos.html";
+            }
+        });
+
+        // Manejo del formulario de login
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) {
+            loginForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const errorMessage = document.getElementById("error-message");
+
+                // Realizar la solicitud al backend para autenticar
+                const response = await fetch("http://localhost:5000/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Si el login es exitoso, guardar el token en el localStorage
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("loggedIn", "true");
+                    window.location.href = "prestamos.html"; // Redirigir a la página de préstamos
+                } else {
+                    // Si el login falla, mostrar el mensaje de error
+                    errorMessage.style.display = "block";
+                    errorMessage.textContent = "Credenciales inválidas, por favor intente de nuevo.";
+                }
+            });
+        }
+
+        // Función para cerrar sesión
+        function logout() {
+            localStorage.removeItem("loggedIn");
+            localStorage.removeItem("token"); // Eliminar el token JWT
+            window.location.href = "index.html";
+        }
+
+        // Función para verificar la autenticación en páginas protegidas
+        function checkAuth() {
+            if (localStorage.getItem("loggedIn") !== "true") {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

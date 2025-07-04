@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrestamosCastillo - Registro de Préstamos</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">💰 PrestamosCastillo</div>
+        <div class="nav-links">
+            <a href="prestamos.html" class="active">Préstamos</a>
+            <a href="cronograma.html">Cronograma</a>
+            <a href="deudas.html">deudas</a> <a href="cambiar-password.html">Cambiar Contraseña</a>
+            <a href="#" onclick="logout()">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Registro de Préstamos</h2>
+        </div>
+
+        <div class="card">
+            <form id="prestamoForm" class="prestamo-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dni">DNI/RUC del Cliente:</label>
+                        <input type="text" id="dni" name="dni" pattern="[0-9]{8}|[0-9]{11}" maxlength="11" required>
+                        <small>DNI: 8 dígitos | RUC: 11 dígitos</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre del Cliente:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="monto">Monto del Préstamo:</label>
+                        <input type="number" id="monto" name="monto" min="100" step="0.01" required>
+                        <small>Monto mínimo: S/.100</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cuotas">Número de Cuotas:</label>
+                        <select id="cuotas" name="cuotas" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="3">3 cuotas</option>
+                            <option value="6">6 cuotas</option>
+                            <option value="12">12 cuotas</option>
+                            <option value="18">18 cuotas</option>
+                            <option value="24">24 cuotas</option>
+                        </select>
+                        <small>Cuotas mensuales.</small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="interes">Tasa de Interés Anual (%):</label>
+                        <input type="number" id="interes" name="interes" value="10" readonly>
+                        <small>Tasa fija anual del 10%.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha">Fecha del Préstamo:</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                    </div>
+                </div>
+
+                <!-- Nuevo campo para la forma de pago -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="formaPago">Forma de Pago:</label>
+                        <select id="formaPago" name="formaPago" required>
+                            <option value="mensual">Mensual (mismo día del mes)</option>
+                            <option value="fecha_fija">Fecha Fija (ej. día 15)</option> <!-- ¡CORREGIDO AQUÍ! -->
+                            <option value="fin_de_mes">Fin de Mes</option>
+                            <option value="cada_30_dias">Cada 30 días</option>
+                        </select>
+                        <small>Define cómo se calcularán las fechas de vencimiento.</small>
+                    </div>
+                    <div class="form-group" id="diaFijoGroup" style="display: none;">
+                        <label for="diaFijo">Día Fijo de Pago:</label>
+                        <input type="number" id="diaFijo" name="diaFijo" min="1" max="31" placeholder="Ej. 15">
+                        <small>Día del mes para el pago (1-31).</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Registrar Préstamo</button>
+                    <button type="reset" class="btn-secondary">Limpiar</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Préstamos Registrados</h3>
+            <div class="table-container">
+                <table id="prestamosTable">
+                    <thead>
+                        <tr>
+                            <th>DNI/RUC</th>
+                            <th>Cliente</th>
+                            <th>Monto</th>
+                            <th>Cuotas</th>
+                            <th>Interés</th>
+                            <th>Fecha Préstamo</th>
+                            <th>Forma Pago</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prestamosTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales personalizados para alertas y confirmaciones -->
+    <div id="customModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <p id="modalMessage"></p>
+            <div id="modalActions" class="modal-actions">
+                <button id="modalConfirmBtn" class="btn-primary" style="display: none;">Aceptar</button>
+                <button id="modalCancelBtn" class="btn-secondary" style="display: none;">Cancelar</button>
+                <button id="modalAlertBtn" class="btn-primary" style="display: none;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts necesarios para esta página -->
+    <script src="js/config.js"></script> <script src="js/login.js"></script>
+    <script src="js/prestamos.js"></script>
+    </body>
+</html>

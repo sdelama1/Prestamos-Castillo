@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrestamosCastillo - Gestión de Deudas</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Estilos generales para todos los modales */
+        .modal {
+            display: none; /* Hidden by default, JS toggles to 'flex' */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Z-index base para modales */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ more opacity for better focus */
+            justify-content: center; /* Usamos flex para centrar el contenido */
+            align-items: center; /* Usamos flex para centrar el contenido */
+        }
+
+        /* Ajuste específico para customModal para que no interfiera */
+        #customModal {
+            z-index: 1001; /* Ligeramente superior al base si hay otros elementos */
+        }
+
+        /* Ajuste específico para comprobanteModal para que siempre esté encima */
+        #comprobanteModal {
+            z-index: 1002; /* Este debe ser MAYOR que customModal y pagoModal */
+        }
+
+        #pagoModal {
+            z-index: 1000; /* Z-index para el modal de pago */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 550px; /* Un poco más ancho para el formulario */
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4); /* Sombra más pronunciada */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Espacio entre elementos del formulario */
+        }
+
+        .modal-content h2, .modal-content h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            margin-bottom: 10px;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .modal-content input[type="text"],
+        .modal-content select {
+            width: calc(100% - 20px); /* Ajuste para padding */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        /* Estilos para los botones del modal */
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Espacio entre los botones */
+            margin-top: 20px;
+        }
+
+        .modal-close-button {
+            background-color: #888; /* Un color neutro para el botón de cerrar */
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            align-self: flex-end; /* Alinea el botón a la derecha dentro del modal-content */
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close-button:hover {
+            background-color: #555;
+        }
+
+        /* Estilos para el comprobante dentro del modal */
+        #comprobanteContent {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: left; /* Asegurar que el texto esté alineado a la izquierda */
+        }
+        #comprobanteContent h2 {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        #comprobanteContent p {
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        #comprobanteContent strong {
+            color: #444;
+        }
+        #comprobanteContent hr {
+            border: 0;
+            border-top: 1px dashed #ccc;
+            margin: 20px 0;
+        }
+        #comprobanteContent .total-amount {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 20px;
+            }
+            .modal-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            .modal-actions button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">💰 PrestamosCastillo</div>
+        <div class="nav-links">
+            <a href="prestamos.html">Préstamos</a>
+            <a href="cronograma.html">Cronograma</a>
+            <a href="deudas.html">Deudas</a>
+            <a href="cambiar-password.html">Cambiar Contraseña</a>
+            <a href="#" onclick="logout()">Cerrar Sesión</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Gestión de Deudas</h2>
+        </div>
+
+        <div class="card">
+            <div class="filter-section">
+                <button class="btn-primary" onclick="cargarDeudas('currentMonth')">Deudas del Mes Actual</button>
+                <button class="btn-danger" onclick="cargarDeudas('overdue')">Deudas Vencidas</button>
+                <button class="btn-warning" onclick="cargarDeudas('upcoming')">Próximas a Vencer</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 id="tableTitle">Deudas del Mes Actual</h3>
+            <div class="table-container">
+                <table id="deudasTable">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>DNI/RUC</th>
+                            <th>Cuota #</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Monto Cuota</th>
+                            <th>Interés Moratorio</th>
+                            <th>Monto Total a Pagar</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deudasTableBody">
+                    </tbody>
+                </table>
+                <p id="noDebtsMessage" style="text-align: center; margin-top: 20px; display: none;">No hay deudas para mostrar en esta categoría.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="customModal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <div id="modalActions" class="modal-actions">
+                <button id="modalConfirmBtn" class="btn-primary" style="display: none;">Confirmar</button>
+                <button id="modalCancelBtn" class="btn-secondary" style="display: none;">Cancelar</button>
+                <button id="modalAlertBtn" class="btn-primary" style="display: none;">OK</button>
+            </div>
+            <button id="closeCustomModalButton" class="modal-close-button">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="pagoModal" class="modal">
+        <div class="modal-content">
+            <h3>Registrar Pago</h3>
+            <p>Cliente: <span id="pagoClienteNombre"></span></p>
+            <p>Cuota #: <span id="pagoCuotaNumero"></span></p>
+            <p>Monto a Pagar: <span id="pagoMonto"></span></p>
+
+            <div class="form-group">
+                <label for="metodoPago">Método de Pago:</label>
+                <select id="metodoPago" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Billetera Digital">Billetera Digital</option>
+                    <option value="PayPal">PayPal</option> </select>
+            </div>
+
+            <div id="tarjetaDetails" style="display: none;">
+                <div class="form-group">
+                    <label for="numeroTarjeta">Número de Tarjeta (últimos 4):</label>
+                    <input type="text" id="numeroTarjeta" placeholder="XXXX" maxlength="4" pattern="\d{4}">
+                </div>
+                <div class="form-group">
+                    <label for="nombreTarjeta">Nombre en Tarjeta:</label>
+                    <input type="text" id="nombreTarjeta" placeholder="Ej: JUAN PEREZ">
+                </div>
+            </div>
+
+            <div id="billeteraDigitalDetails" style="display: none;">
+                <div class="form-group">
+                    <label for="tipoBilletera">Tipo de Billetera:</label>
+                    <input type="text" id="tipoBilletera" placeholder="Ej. Yape, Plin">
+                </div>
+                <div class="form-group">
+                    <label for="numeroBilletera">Número/ID de Transacción:</label>
+                    <input type="text" id="numeroBilletera" placeholder="Ej: 987654321 o ID de transacción">
+                </div>
+            </div>
+
+            <div id="paypalDetails" style="display: none;">
+                <p style="text-align: center; color: #0070ba; font-weight: bold;">
+                    Serás redirigido a la página segura de PayPal para completar tu pago.
+                </p>
+                <p style="text-align: center; font-size: 0.9em; color: #666;">
+                    Una vez completado el pago, regresarás a esta página para ver tu comprobante.
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-primary" onclick="confirmarPago()">Confirmar Pago</button>
+                <button id="closePagoModalButton" class="modal-close-button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="comprobanteModal" class="modal">
+        <div class="modal-content">
+            <h3>Comprobante de Pago</h3>
+            <div id="comprobanteContent">
+                </div>
+            <div class="form-actions" style="justify-content: center; margin-top: 20px;">
+                <button class="btn-primary" onclick="imprimirComprobante()">Imprimir Comprobante</button>
+                <button id="closeComprobanteModalButton" class="modal-close-button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/deudas.js"></script>
+</body>
+</html>

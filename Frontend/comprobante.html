@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprobante de Pago</title>
+    <link rel="stylesheet" href="/css/styles.css"> <style>
+        body { font-family: Arial, sans-serif; }
+        .comprobante-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        h2 { text-align: center; color: #333; }
+        p { margin: 10px 0; }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-print {
+            display: block;
+            width: fit-content;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="comprobante-container">
+        <h2>Comprobante de Pago</h2>
+        <p class="success-message">¡Tu pago ha sido procesado con éxito!</p>
+        <div id="comprobante-details">
+            <p><strong>ID de Préstamo:</strong> <span id="loanId"></span></p>
+            <p><strong>ID de Cuota:</strong> <span id="cuotaId"></span></p>
+            <p><strong>ID de Transacción:</strong> <span id="transactionId"></span></p>
+            <p><strong>Método de Pago:</strong> <span id="paymentMethod"></span></p>
+            </div>
+        <button class="btn-print" onclick="window.print()">Imprimir Comprobante</button>
+        <a href="/deudas.html" class="btn-print" style="background-color: #6c757d;">Volver a Deudas</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            document.getElementById('loanId').textContent = params.get('loanId') || 'N/A';
+            document.getElementById('cuotaId').textContent = params.get('cuotaId') || 'N/A';
+            document.getElementById('transactionId').textContent = params.get('transactionId') || 'N/A';
+            document.getElementById('paymentMethod').textContent = params.get('method') || 'N/A';
+
+            // Para mostrar un comprobante completo, podrías hacer otra llamada a tu API
+            // router.get("/api/loans/:loanId/:cuotaId") para obtener todos los detalles de la cuota y del préstamo
+            // y llenar la vista dinámicamente.
+        });
+    </script>
+</body>
+</html>

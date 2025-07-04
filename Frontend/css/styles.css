@@ -1,0 +1,490 @@
+/* styles.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Login Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo h1 {
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+}
+
+.logo p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+/* Navigation */
+.navbar {
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    background: #667eea;
+    color: white;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header h2 {
+    color: white;
+    font-size: 2.5em;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Cards */
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.form-group small {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #5a6fd8;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #e1e5e9;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #d1d5d9;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.btn-warning {
+    background: #bac013;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+/* Tables */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+table tr:hover {
+    background: #f8f9fa;
+}
+
+/* Messages */
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 1px solid #f5c6cb;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 1px solid #c3e6cb;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+/* Cronograma específico */
+.cronograma-header {
+    margin-bottom: 2rem;
+}
+
+.cronograma-header h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.resumen-prestamo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.resumen-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resumen-item .label {
+    font-weight: 600;
+    color: #666;
+}
+
+.resumen-item .value {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.filter-section {
+    margin-bottom: 1rem;
+}
+
+.estado-pendiente {
+    background: #fff3cd;
+    color: #856404;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.estado-pagado {
+    background: #d4edda;
+    color: #155724;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Nuevos estilos para estados de deuda */
+.estado-vencida {
+    background: #f8d7da; /* Rojo claro */
+    color: #721c24; /* Rojo oscuro */
+    font-weight: bold;
+    animation: pulse-red 1s infinite alternate; /* Animación para vencidas */
+}
+
+.estado-por-vencer {
+    background: #ffeeba; /* Amarillo claro */
+    color: #664d03; /* Amarillo oscuro */
+    font-weight: bold;
+}
+
+.estado-vence-hoy {
+    background: #ffc107; /* Amarillo más oscuro */
+    color: #343a40;
+    font-weight: bold;
+    animation: blink-yellow 1s infinite alternate; /* Animación para hoy */
+}
+
+@keyframes pulse-red {
+    from { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    to { box-shadow: 0 0 0 8px rgba(220, 53, 69, 0); }
+}
+
+@keyframes blink-yellow {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
+}
+
+
+/* Password form */
+.password-card {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px;
+    /* AÑADIDO/MODIFICADO: Más padding superior para evitar que la X quede por debajo */
+    padding-top: 50px; /* Incrementado para dar más espacio a la "X" */
+    padding-right: 40px; /* También un poco más de padding a la derecha */
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.close-button {
+    color: #aaa;
+    /* float: right; Quita esto, es obsoleto con position: absolute */
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1001; /* Asegura que la "X" esté por encima de todo */
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .resumen-prestamo {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}
+
+/* Para cuotas pagadas (atenuadas y tachadas) */
+.estado-pagada {
+    color: #6c757d; /* Gris */
+    text-decoration: line-through;
+    opacity: 0.7;
+    font-weight: normal;
+}
+
+/* Para cuotas vencidas (rojo) */
+.estado-vencida {
+    color: #dc3545; /* Rojo */
+    font-weight: bold;
+}
+
+/* Para cuotas que vencen en la semana actual (amarillo) */
+.estado-por-vencer-semana {
+    color: #ffc107; /* Amarillo */
+    font-weight: bold;
+    /* Puedes añadir un fondo sutil si lo prefieres: background-color: #fff3cd; */
+}
+
+/* Para cuotas que vencen hoy (alerta/amarillo oscuro con animación) */
+.estado-vence-hoy {
+    color: #e0a800; /* Amarillo más oscuro */
+    font-weight: bold;
+    animation: pulse 1.5s infinite; /* Animación para alertar */
+}
+
+/* Animación de pulso para la alerta */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.9; } /* Ligeramente más grande y un poco menos opaco */
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Para el estado pendiente normal (si quieres un color específico, si no, se usará el color por defecto del texto) */
+.estado-pendiente {
+    color: #007bff; /* Azul, por ejemplo */
+    font-weight: normal;
+}

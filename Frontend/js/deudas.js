@@ -344,8 +344,21 @@ async function confirmarPago() {
         closePagoModal();
         closeModal(); // Asegura que el customModal esté cerrado
 
-        generarComprobante(data.comprobante, {
-            // Pasamos los detalles exactos que se usaron en el formulario
+        // =========================================================================
+        // ¡¡¡ CORRECCIÓN CRÍTICA AQUÍ !!!
+        // Asegúrate de que comprobanteData realmente contenga loanId y cuotaId.
+        // Si tu backend no los devuelve dentro de data.comprobante, necesitarás
+        // pasarlos explícitamente o modificar tu backend.
+        // Aquí se asume que data.comprobante ya los incluye o se los añadimos.
+        // =========================================================================
+        const comprobanteCompleto = {
+            ...data.comprobante, // Propiedades que vienen del backend
+            loanId: loanId,      // Añade loanId que ya tienes
+            cuotaId: cuotaId     // Añade cuotaId que ya tienes
+        };
+
+        console.log("DEBUG: Datos de comprobante enviados a generarComprobante:", comprobanteCompleto); // Para depuración
+        generarComprobante(comprobanteCompleto, { // Usamos el objeto comprobanteCompleto
             tipoBilletera: detallesPago.tipoBilletera || '',
             numeroBilletera: detallesPago.numeroBilletera || '',
             numeroTarjeta: detallesPago.numeroTarjeta || '',
@@ -409,6 +422,15 @@ function generarComprobante(comprobanteData, localPaymentDetails = {}) {
 
     closeModal(); // Cierra explícitamente el customModal
 
+    // =========================================================================
+    // ¡¡¡ CORRECCIÓN EN LA VERIFICACIÓN DE SUBSTRING Y ACCESO A PROPIEDADES !!!
+    // Aseguramos que loanId y cuotaId existan antes de llamar a substring.
+    // Usamos el operador de encadenamiento opcional (?.) para mayor seguridad.
+    // =========================================================================
+    const loanIdShort = comprobanteData.loanId ? comprobanteData.loanId.substring(0, 8) : 'N/A';
+    const cuotaIdShort = comprobanteData.cuotaId ? comprobanteData.cuotaId.substring(0, 8) : 'N/A';
+
+
     const fechaPago = new Date(comprobanteData.fechaPagoReal).toLocaleDateString('es-PE', {
         year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });
@@ -438,20 +460,20 @@ function generarComprobante(comprobanteData, localPaymentDetails = {}) {
             <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
 
             <p><strong>Fecha de Pago:</strong> ${fechaPago}</p>
-            <p><strong>ID de Transacción Interna:</strong> ${comprobanteData.loanId.substring(0, 8)}-${comprobanteData.cuotaId.substring(0, 8)}</p>
+            <p><strong>ID de Transacción Interna:</strong> ${loanIdShort}-${cuotaIdShort}</p>
             <br>
-            <p><strong>Cliente:</strong> ${comprobanteData.nombreCliente}</p>
-            <p><strong>DNI/RUC:</strong> ${comprobanteData.dniCliente}</p>
+            <p><strong>Cliente:</strong> ${comprobanteData.nombreCliente || 'N/A'}</p>
+            <p><strong>DNI/RUC:</strong> ${comprobanteData.dniCliente || 'N/A'}</p>
             <br>
-            <p><strong>Préstamo ID:</strong> ${comprobanteData.loanId}</p>
-            <p><strong>Cuota Pagada:</strong> ${comprobanteData.cuotaNumero}</p>
-            <p><strong>Fecha de Vencimiento Original:</strong> ${fechaVencimientoOriginal}</p>
+            <p><strong>Préstamo ID:</strong> ${comprobanteData.loanId || 'N/A'}</p>
+            <p><strong>Cuota Pagada:</strong> ${comprobanteData.cuotaNumero || 'N/A'}</p>
+            <p><strong>Fecha de Vencimiento Original:</strong> ${fechaVencimientoOriginal || 'N/A'}</p>
             <br>
-            <p><strong>Monto Cuota Original:</strong> S/.${comprobanteData.montoCuotaOriginal.toFixed(2)}</p>
-            <p><strong>Interés Moratorio Aplicado:</strong> S/.${comprobanteData.montoMoraAplicada.toFixed(2)}</p>
-            <p style="font-size: 1.2em; font-weight: bold; color: #28a745;"><strong>Monto Total Pagado:</strong> S/.${comprobanteData.montoPagado.toFixed(2)}</p>
+            <p><strong>Monto Cuota Original:</strong> S/.${(comprobanteData.montoCuotaOriginal || 0).toFixed(2)}</p>
+            <p><strong>Interés Moratorio Aplicado:</strong> S/.${(comprobanteData.montoMoraAplicada || 0).toFixed(2)}</p>
+            <p style="font-size: 1.2em; font-weight: bold; color: #28a745;"><strong>Monto Total Pagado:</strong> S/.${(comprobanteData.montoPagado || 0).toFixed(2)}</p>
             <br>
-            <p><strong>Método de Pago:</strong> ${comprobanteData.medioPago}</p>
+            <p><strong>Método de Pago:</strong> ${comprobanteData.medioPago || 'N/A'}</p>
             ${detallesPagoHTML}
             <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
             <p style="text-align: center; font-size: 0.8em; color: #999;">¡Gracias por su pago!</p>

@@ -49,7 +49,7 @@ if (passwordForm) {
 
         try {
             // Enviar la solicitud al backend para cambiar la contraseña
-            const response = await fetch("https://prestamos-castillo-app.onrender.com/api/auth/change-password", {
+            const response = await fetch("/api/auth/change-password", {
                 method: "PUT", // Usamos PUT para actualizar un recurso existente
                 headers: {
                     "Content-Type": "application/json",

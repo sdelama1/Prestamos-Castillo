@@ -20,7 +20,7 @@ if (loginForm) {
         const errorMessage = document.getElementById("error-message");
 
         // Realizar la solicitud al backend para autenticar
-        const response = await fetch("http://localhost:5000/api/auth/login", {
+        const response = await fetch("https://prestamos-castillo-api.onrender.com/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
